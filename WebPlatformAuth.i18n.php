@@ -12,14 +12,14 @@ $messages = array();
  * @author Robert Vogel
  */
 $messages['en'] = array(
-	'webplatformauth-desc' => 'Enables MediaWiki to serve as webplatform.org\'s authentication provider.'
+	'webplatformauth-desc' => 'Enables MediaWiki to serve as webplatform.org\'s authentication provider'
 );
 
 /** Message documentation (Message documentation)
  * @author Robert Vogel
  */
 $messages['qqq'] = array(
-	'webplatformauth-desc' => 'The extensions description'
+	'webplatformauth-desc' => '{{desc}}'
 );
 
 /** German (Deutsch)
