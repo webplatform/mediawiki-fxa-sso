@@ -44,3 +44,24 @@ $messages['fr'] = array(
 $messages['ja'] = array(
 	'webplatformauth-desc' => 'MediaWiki が webplatform.org の認証プロバイダー機能を提供できるようにする',
 );
+
+/** Macedonian (македонски)
+ * @author Bjankuloski06
+ */
+$messages['mk'] = array(
+	'webplatformauth-desc' => 'Овозможува МедијаВики да служи како заверувач за webplatform.org',
+);
+
+/** tarandíne (tarandíne)
+ * @author Joetaras
+ */
+$messages['roa-tara'] = array(
+	'webplatformauth-desc' => 'Abbilite MediaUicchi pe servì cumme fornitore de autendicazione pe piattaforme web webplatform.org',
+);
+
+/** Vietnamese (Tiếng Việt)
+ * @author Minh Nguyen
+ */
+$messages['vi'] = array(
+	'webplatformauth-desc' => 'Cung cấp khả năng xác thực cho webplatform.org trong MediaWiki',
+);
