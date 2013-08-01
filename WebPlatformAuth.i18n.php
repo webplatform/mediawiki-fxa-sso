@@ -38,6 +38,13 @@ $messages['fr'] = array(
 	'webplatformauth-desc' => "Autoriser MediaWiki à devenir un fournisseur d'authentification au nom de webplatform.org",
 );
 
+/** Galician (galego)
+ * @author Toliño
+ */
+$messages['gl'] = array(
+	'webplatformauth-desc' => 'Autoriza que MediaWiki sirva como o provedor de autenticación de webplatform.org',
+);
+
 /** Japanese (日本語)
  * @author Shirayuki
  */
