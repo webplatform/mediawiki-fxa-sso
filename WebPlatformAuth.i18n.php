@@ -23,6 +23,13 @@ $messages['qqq'] = array(
 	'webplatformauth-desc' => '{{desc|name=Web Platform Auth}}',
 );
 
+/** Asturian (asturianu)
+ * @author Xuacu
+ */
+$messages['ast'] = array(
+	'webplatformauth-desc' => "Permite que MediaWiki sirva como o fornidor d'autenticación pa webplatform.org",
+);
+
 /** German (Deutsch)
  * @author Metalhead64
  * @author Robert Vogel
