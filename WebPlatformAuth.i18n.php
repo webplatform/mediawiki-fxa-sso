@@ -73,6 +73,13 @@ $messages['roa-tara'] = array(
 	'webplatformauth-desc' => 'Abbilite MediaUicchi pe servì cumme fornitore de autendicazione pe piattaforme web webplatform.org',
 );
 
+/** Ukrainian (українська)
+ * @author Andriykopanytsia
+ */
+$messages['uk'] = array(
+	'webplatformauth-desc' => 'Дозволяє MediaWiki забезпечувати авторищацію на webplatform.org',
+);
+
 /** Vietnamese (Tiếng Việt)
  * @author Minh Nguyen
  */
