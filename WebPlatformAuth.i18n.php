@@ -66,6 +66,13 @@ $messages['mk'] = array(
 	'webplatformauth-desc' => 'Овозможува МедијаВики да служи како заверувач за webplatform.org',
 );
 
+/** Brazilian Portuguese (português do Brasil)
+ * @author Fúlvio
+ */
+$messages['pt-br'] = array(
+	'webplatformauth-desc' => 'Permite que MediaWiki sirva como provedor de autenticação de webplatform.org',
+);
+
 /** tarandíne (tarandíne)
  * @author Joetaras
  */
