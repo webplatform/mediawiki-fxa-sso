@@ -52,6 +52,13 @@ $messages['gl'] = array(
 	'webplatformauth-desc' => 'Autoriza que MediaWiki sirva como o provedor de autenticación de webplatform.org',
 );
 
+/** Italian (italiano)
+ * @author Gianfranco
+ */
+$messages['it'] = array(
+	'webplatformauth-desc' => 'Consente a MediaWiki di fungere da provider di autenticazione di webplatform.org',
+);
+
 /** Japanese (日本語)
  * @author Shirayuki
  */
