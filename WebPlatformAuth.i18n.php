@@ -66,6 +66,13 @@ $messages['ja'] = array(
 	'webplatformauth-desc' => 'MediaWiki が webplatform.org の認証プロバイダー機能を提供できるようにする',
 );
 
+/** Colognian (Ripoarisch)
+ * @author Purodha
+ */
+$messages['ksh'] = array(
+	'webplatformauth-desc' => 'Määd et müjjelesch, Aanmäldonge vun heh noh <code lang="en" xml:lang="en">webplatform.org</code> ze övverdraare.',
+);
+
 /** Macedonian (македонски)
  * @author Bjankuloski06
  */
