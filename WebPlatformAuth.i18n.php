@@ -121,3 +121,10 @@ $messages['uk'] = array(
 $messages['vi'] = array(
 	'webplatformauth-desc' => 'Cung cấp khả năng xác thực cho webplatform.org trong MediaWiki',
 );
+
+/** Simplified Chinese (中文（简体）‎)
+ * @author Liuxinyu970226
+ */
+$messages['zh-hans'] = array(
+	'webplatformauth-desc' => '启用MediaWiki以作为webplatform.org的身份验证程序',
+);
