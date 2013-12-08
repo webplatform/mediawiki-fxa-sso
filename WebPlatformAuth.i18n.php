@@ -80,6 +80,13 @@ $messages['mk'] = array(
 	'webplatformauth-desc' => 'Овозможува МедијаВики да служи како заверувач за webplatform.org',
 );
 
+/** Dutch (Nederlands)
+ * @author Siebrand
+ */
+$messages['nl'] = array(
+	'webplatformauth-desc' => 'Maakt het mogelijk om MediaWiki te laten dienen als authenticatieprovider voor webplatform.org',
+);
+
 /** Occitan (occitan)
  * @author Cedric31
  */
