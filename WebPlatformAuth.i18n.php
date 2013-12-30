@@ -38,6 +38,13 @@ $messages['de'] = array(
 	'webplatformauth-desc' => 'Ermöglicht es MediaWiki, als webplatform.org-Authentifikationsprovider zu dienen',
 );
 
+/** Lower Sorbian (dolnoserbski)
+ * @author Michawiki
+ */
+$messages['dsb'] = array(
+	'webplatformauth-desc' => 'Zmóžnja, až MediaWiki słužy ako awtentifikaciski póbitowaŕ za webplatform.org',
+);
+
 /** French (français)
  * @author Sherbrooke
  */
@@ -50,6 +57,13 @@ $messages['fr'] = array(
  */
 $messages['gl'] = array(
 	'webplatformauth-desc' => 'Autoriza que MediaWiki sirva como o provedor de autenticación de webplatform.org',
+);
+
+/** Upper Sorbian (hornjoserbsce)
+ * @author Michawiki
+ */
+$messages['hsb'] = array(
+	'webplatformauth-desc' => 'Zmóžnja, zo MediaWiki jako awtentifikaciski poskićowar za webplatform.org słuži',
 );
 
 /** Italian (italiano)
