@@ -80,6 +80,13 @@ $messages['ja'] = array(
 	'webplatformauth-desc' => 'MediaWiki が webplatform.org の認証プロバイダー機能を提供できるようにする',
 );
 
+/** Korean (한국어)
+ * @author Priviet
+ */
+$messages['ko'] = array(
+	'webplatformauth-desc' => 'webplatform.org의 인증 공급자를 제공하여 미디어위키를 활성화',
+);
+
 /** Colognian (Ripoarisch)
  * @author Purodha
  */
