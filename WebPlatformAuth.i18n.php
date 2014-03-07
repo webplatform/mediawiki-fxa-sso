@@ -45,6 +45,13 @@ $messages['dsb'] = array(
 	'webplatformauth-desc' => 'Zmóžnja, až MediaWiki słužy ako awtentifikaciski póbitowaŕ za webplatform.org',
 );
 
+/** Persian (فارسی)
+ * @author Armin1392
+ */
+$messages['fa'] = array(
+	'webplatformauth-desc' => 'فعال کردن مدیاویکی برای کارکردن به عنوان ارائه دهنده اعتبارنامه webplatform.org',
+);
+
 /** French (français)
  * @author Sherbrooke
  */
