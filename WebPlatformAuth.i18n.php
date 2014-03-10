@@ -66,6 +66,13 @@ $messages['gl'] = array(
 	'webplatformauth-desc' => 'Autoriza que MediaWiki sirva como o provedor de autenticación de webplatform.org',
 );
 
+/** Hebrew (עברית)
+ * @author Yona b
+ */
+$messages['he'] = array(
+	'webplatformauth-desc' => 'מאפשר למדיה־ויקי לשמש כמאמת של webplatform.org',
+);
+
 /** Upper Sorbian (hornjoserbsce)
  * @author Michawiki
  */
