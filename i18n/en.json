@@ -1,0 +1,8 @@
+{
+    "@metadata": {
+        "authors": [
+            "Robert Vogel"
+        ]
+    },
+    "webplatformauth-desc": "Enables MediaWiki to serve as webplatform.org's authentication provider"
+}

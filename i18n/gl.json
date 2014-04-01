@@ -1,0 +1,8 @@
+{
+    "@metadata": {
+        "authors": [
+            "Toliño"
+        ]
+    },
+    "webplatformauth-desc": "Autoriza que MediaWiki sirva como o provedor de autenticación de webplatform.org"
+}

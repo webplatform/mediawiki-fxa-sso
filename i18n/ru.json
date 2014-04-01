@@ -1,0 +1,8 @@
+{
+    "@metadata": {
+        "authors": [
+            "Okras"
+        ]
+    },
+    "webplatformauth-desc": "Позволяет использовать MediaWiki в качестве поставщика проверки подлинности на webplatform.org"
+}

@@ -1,0 +1,8 @@
+{
+    "@metadata": {
+        "authors": [
+            "Siebrand"
+        ]
+    },
+    "webplatformauth-desc": "Maakt het mogelijk om MediaWiki te laten dienen als authenticatieprovider voor webplatform.org"
+}

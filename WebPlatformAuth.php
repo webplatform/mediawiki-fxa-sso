@@ -7,21 +7,22 @@ require_once( "$IP/extensions/WebPlatformAuth/WebPlatformAuth.php" );
 EOT;
 	exit( 1 );
 }
- 
+
 $wgExtensionCredits['other'][] = array(
 	'path'           => __FILE__,
 	'name'           => 'WebPlatformAuth',
 	'author'         => '[http://www.hallowelt.biz Hallo Welt! Medienwerkstatt GmbH]; Robert Vogel',
 	'url'            => 'http://www.hallowelt.biz',
 	'descriptionmsg' => 'webplatformauth-desc',
-	'version'        => '1.0.0; $Revision: 6738 $',
+	'version'        => '1.1.0',
 );
 
 $dir = dirname(__FILE__) . '/';
- 
+
 $wgAutoloadClasses['WebPlatformAuthHooks']   = $dir . 'includes/WebPlatformAuthHooks.php';
 $wgAutoloadClasses['ApiWebPlatformAuth']     = $dir . 'includes/api/ApiWebPlatformAuth.php';
 $wgAutoloadClasses['WPARenewSession']        = $dir . 'includes/specials/WPA_RenewSession.php';
+$wgMessagesDirs['WebPlatformAuth'] = __DIR__ . '/i18n';
 $wgExtensionMessagesFiles['WebPlatformAuth'] = $dir . 'WebPlatformAuth.i18n.php';
 
 $wgSpecialPages['RenewSession'] = 'WPARenewSession';

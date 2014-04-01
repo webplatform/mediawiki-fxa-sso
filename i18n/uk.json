@@ -1,0 +1,8 @@
+{
+    "@metadata": {
+        "authors": [
+            "Andriykopanytsia"
+        ]
+    },
+    "webplatformauth-desc": "Дозволяє MediaWiki забезпечувати авторищацію на webplatform.org"
+}
