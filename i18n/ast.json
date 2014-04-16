@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Xuacu"
-        ]
-    },
-    "webplatformauth-desc": "Permite que MediaWiki sirva como o fornidor d'autenticación pa webplatform.org"
+	"@metadata": {
+		"authors": [
+			"Xuacu"
+		]
+	},
+	"webplatformauth-desc": "Permite que MediaWiki sirva como o fornidor d'autenticación pa webplatform.org"
 }

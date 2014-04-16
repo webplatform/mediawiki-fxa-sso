@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Gianfranco"
-        ]
-    },
-    "webplatformauth-desc": "Consente a MediaWiki di fungere da provider di autenticazione di webplatform.org"
+	"@metadata": {
+		"authors": [
+			"Gianfranco"
+		]
+	},
+	"webplatformauth-desc": "Consente a MediaWiki di fungere da provider di autenticazione di webplatform.org"
 }

@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Michawiki"
-        ]
-    },
-    "webplatformauth-desc": "Zmóžnja, zo MediaWiki jako awtentifikaciski poskićowar za webplatform.org słuži"
+	"@metadata": {
+		"authors": [
+			"Michawiki"
+		]
+	},
+	"webplatformauth-desc": "Zmóžnja, zo MediaWiki jako awtentifikaciski poskićowar za webplatform.org słuži"
 }

@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Sherbrooke"
-        ]
-    },
-    "webplatformauth-desc": "Autoriser MediaWiki à devenir un fournisseur d'authentification au nom de webplatform.org"
+	"@metadata": {
+		"authors": [
+			"Sherbrooke"
+		]
+	},
+	"webplatformauth-desc": "Autoriser MediaWiki à devenir un fournisseur d'authentification au nom de webplatform.org"
 }

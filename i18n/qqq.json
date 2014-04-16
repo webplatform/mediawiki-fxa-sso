@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Robert Vogel",
-            "Shirayuki"
-        ]
-    },
-    "webplatformauth-desc": "{{desc|name=Web Platform Auth}}"
+	"@metadata": {
+		"authors": [
+			"Robert Vogel",
+			"Shirayuki"
+		]
+	},
+	"webplatformauth-desc": "{{desc|name=Web Platform Auth}}"
 }

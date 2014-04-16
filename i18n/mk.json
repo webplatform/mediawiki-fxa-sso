@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Bjankuloski06"
-        ]
-    },
-    "webplatformauth-desc": "Овозможува МедијаВики да служи како заверувач за webplatform.org"
+	"@metadata": {
+		"authors": [
+			"Bjankuloski06"
+		]
+	},
+	"webplatformauth-desc": "Овозможува МедијаВики да служи како заверувач за webplatform.org"
 }

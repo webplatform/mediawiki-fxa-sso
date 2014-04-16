@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Metalhead64",
-            "Robert Vogel"
-        ]
-    },
-    "webplatformauth-desc": "Ermöglicht es MediaWiki, als webplatform.org-Authentifikationsprovider zu dienen"
+	"@metadata": {
+		"authors": [
+			"Metalhead64",
+			"Robert Vogel"
+		]
+	},
+	"webplatformauth-desc": "Ermöglicht es MediaWiki, als webplatform.org-Authentifikationsprovider zu dienen"
 }

@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Shirayuki"
-        ]
-    },
-    "webplatformauth-desc": "MediaWiki が webplatform.org の認証プロバイダー機能を提供できるようにする"
+	"@metadata": {
+		"authors": [
+			"Shirayuki"
+		]
+	},
+	"webplatformauth-desc": "MediaWiki が webplatform.org の認証プロバイダー機能を提供できるようにする"
 }
