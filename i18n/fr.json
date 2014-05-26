@@ -1,8 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
-			"Sherbrooke"
+			"Sherbrooke",
+      "Renoir Boulanger"
 		]
 	},
-	"webplatformauth-desc": "Autoriser MediaWiki à devenir un fournisseur d'authentification au nom de webplatform.org"
+	"webplatformauth-desc": "Permet à MediaWiki de créer et connecter des comptes locaux basé sur les données d’un service de profils protégé par OAuth2 tels Mozilla Firefox Accounts et celui de WebPlatform.org",
+  "webplatformauth-missing-required-config": "Une ou plusieurs des éléments de configuration requises sont manquantes",
+  "webplatformauth-cannot-repeat-oauth-handshake": "Impossible de répéter le processus d’authorisation OAuth2. Il doit être répété à partir du début",
+  "webplatformauth-exception-oauth-handshake-details-below": "Erreur lors du processus d’authorisation OAuth2, voir message de l’erreur",
+  "webplatformauth-error-flow-state-data-empty": "Erreur lors de la tentative de restaurer l’état de votre session avant la récente tentative de connexion",
+  "webplatformauth-exception-cannot-read-profile": "Erreur survenue lors de la tentative de lire les données du serveur de profil, est-il fonctionnel?",
+  "webplatformauth-error-user-nodata": "Erreur survenue lorsque lors de la tentative de lire les données du serveur de profile, il n’a rien retourné",
+  "webplatformauth-exception-invalid-user-create-entry": "Données d’utilisateur reçues sont dans une format incompréhensible"
 }

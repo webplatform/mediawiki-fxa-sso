@@ -1,0 +1,30 @@
+{
+  "name": "webplatform/mediawiki-fxa-sso",
+  "type": "mediawiki-extension",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Renoir Boulanger",
+      "email": "renoir@w3.org",
+      "role": "Developer",
+      "homepage": "http://renoirboulanger.com"
+    }
+  ],
+  "require": {
+    "guzzlehttp/guzzle": "~3.8"
+  },
+  "autoload": {
+    "files" : [
+      "WebPlatformAuth.php"
+    ],
+    "classmap":[
+      "includes/"
+    ]
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/webplatform/mediawiki-fxa-sso"
+    }
+  ]
+}

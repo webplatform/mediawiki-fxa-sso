@@ -1,8 +1,16 @@
 {
     "@metadata": {
         "authors": [
-            "Robert Vogel"
+            "Robert Vogel",
+            "Renoir Boulanger"
         ]
     },
-    "webplatformauth-desc": "Enables MediaWiki to serve as webplatform.org's authentication provider"
+    "webplatformauth-desc": "Enables a MediaWiki instance to read information from an OAuth2 protected profile server and handles user accounts. The profile server becomes the authority creating SSO for that MediaWiki installation.",
+    "webplatformauth-missing-required-config": "Required configuration for the extension to work is missing",
+    "webplatformauth-cannot-repeat-oauth-handshake": "Cannot cannot repeat OAuth handshake, it has to be started over",
+    "webplatformauth-exception-oauth-handshake-details-below": "OAuth2 handshake error, see Exception error message below",
+    "webplatformauth-error-flow-state-data-empty": "Error while attempting to resume state prior to the login process",
+    "webplatformauth-exception-cannot-read-profile": "Error while attempting to read profile server data.",
+    "webplatformauth-error-user-nodata": "Error while attempting to read profile data, there was nothing",
+    "webplatformauth-exception-invalid-user-create-entry": "Invalid user data!"
 }
