@@ -1,0 +1,51 @@
+{
+  "name": "webplatform/mediawiki-fxa-sso",
+  "type": "mediawiki-extension",
+  "license": "MIT",
+  "description": "WebPlatform Docs SSO Extension communicating with WebPlatorm’s own Firefox Accounts server",
+  "keywords": [
+    "MediaWiki",
+    "WebPlatform",
+    "authentication",
+    "Firefox Accounts",
+    "OAuth2",
+    "FxA"
+  ],
+  "homepage": "http://docs.webplatform.org/wiki/WPD:Projects/SSO/MediaWikiExtension",
+  "authors": [
+    {
+      "name": "Renoir Boulanger",
+      "email": "renoir@w3.org",
+      "role": "Maintainer",
+      "homepage": "https://renoirboulanger.com"
+    },
+    {
+      "name": "Doug Schepers",
+      "email": "schepers@w3.org",
+      "role": "Project lead"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/webplatform/mediawiki-fxa-sso/issues",
+    "email":  "team-webplatform-systems@w3.org",
+    "irc":    "irc://irc.freenode.net/webplatform",
+    "source": "https://github.com/webplatform/mediawiki-fxa-sso"
+  },
+  "require": {
+    "guzzlehttp/guzzle": "~3.8"
+  },
+  "autoload": {
+    "files" : [
+      "WebPlatformAuth.php"
+    ],
+    "classmap":[
+      "includes/"
+    ]
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/webplatform/mediawiki-fxa-sso"
+    }
+  ]
+}

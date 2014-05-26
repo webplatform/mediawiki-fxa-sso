@@ -1,53 +1,59 @@
 <?php
-# Alert the user that this is not a valid entry point to MediaWiki if they try to access the special pages file directly.
-if (!defined('MEDIAWIKI')) {
-	echo <<<EOT
-To install my extension, put the following line in LocalSettings.php:
-require_once( "$IP/extensions/WebPlatformAuth/WebPlatformAuth.php" );
-EOT;
-	exit( 1 );
+
+/**
+ * MediaWiki SSO using Firefox Accounts
+ *
+ * Project details are available on the WebPlatform wiki
+ * https://docs.webplatform.org/wiki/WPD:Projects/SSO/MediaWikiExtension
+ *
+ * @ingroup Extensions
+ *
+ * @version 2.0-dev
+ */
+
+if ( !defined( 'MEDIAWIKI' ) ) {
+  echo( "Not an entry point." );
+  die( -1 );
 }
 
-$wgExtensionCredits['other'][] = array(
-	'path'           => __FILE__,
-	'name'           => 'WebPlatformAuth',
-	'author'         => '[http://www.hallowelt.biz Hallo Welt! Medienwerkstatt GmbH]; Robert Vogel',
-	'url'            => 'http://www.hallowelt.biz',
-	'descriptionmsg' => 'webplatformauth-desc',
-	'version'        => '1.1.0',
-);
+//if ( version_compare( $GLOBALS['wgVersion'], '1.22', '<' ) ) {
+//   die( '<b>Error:</b> This extension requires MediaWiki 1.22 or above' );
+//}
 
 $dir = dirname(__FILE__) . '/';
 
-$wgAutoloadClasses['WebPlatformAuthHooks']   = $dir . 'includes/WebPlatformAuthHooks.php';
-$wgAutoloadClasses['ApiWebPlatformAuth']     = $dir . 'includes/api/ApiWebPlatformAuth.php';
-$wgAutoloadClasses['WPARenewSession']        = $dir . 'includes/specials/WPA_RenewSession.php';
-$wgMessagesDirs['WebPlatformAuth'] = __DIR__ . '/i18n';
-$wgExtensionMessagesFiles['WebPlatformAuth'] = $dir . 'WebPlatformAuth.i18n.php';
+if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
+  $loader = require( __DIR__ . '/vendor/autoload.php' );
+  $loader->add( 'Guzzle\\', $dir . '/vendor/guzzlehttp/guzzle/src/Guzzle/' );
+} else {
+  die('You MUST install Composer dependencies');
+}
 
-$wgSpecialPages['RenewSession'] = 'WPARenewSession';
-//$wgWhitelistRead[] = 'Special:RenewSession';
-
-$wgAPIModules['webplatformauth'] = 'ApiWebPlatformAuth';
-
-$wgAjaxExportList[] = 'WebPlatformAuthHooks::ajaxGetUserInfoById';
-$wgAjaxExportList[] = 'WebPlatformAuthHooks::ajaxGetUserInfoByName';
-
-$wgHooks['UserLogoutComplete'][] = 'WebPlatformAuthHooks::onUserLogoutComplete';
-$wgHooks['UserLoginComplete'][]  = 'WebPlatformAuthHooks::onUserLoginComplete';
-$wgHooks['UserSetCookies'][]     = 'WebPlatformAuthHooks::onUserSetCookies';
-//$wgHooks['UserLoadFromSession'][]          = 'WebPlatformAuthHooks::onUserLoadFromSession';
-$wgHooks['UserLoadAfterLoadFromSession'][] = 'WebPlatformAuthHooks::onUserLoadAfterLoadFromSession';
-//$wgHooks['UserLoadFromDatabase'][]         = 'WebPlatformAuthHooks::onUserLoadFromDatabase';
-
-/**
- * @deprecated Replaced by $wgWebPlatformAuthSecret, because in WPD setup IP addresses ain't predictable enough
- */
-$wgWebPlatformAuthAllowedClients = array(
-	'localhost',
-	'127.0.0.1'
+$wgExtensionCredits['other'][] = array(
+  'name'           => 'WebPlatformAuth',
+  'path'           => __FILE__,
+  'version'        => '2.0-dev',
+  'author'         => array('[https://renoirboulanger.com Renoir Boulanger]'),
+  'url'            => 'http://docs.webplatform.org/wiki/WPD:Projects/SSO/MediaWikiExtension',
+  'description'    => 'Single Sign On MediaWiki extension',
 );
 
-$wgWebPlatformAuthSecret = 'NqzdqcdCRWd1JZ1DXSI2Eq5BbjYra40nEguT8654C7eNrMldXuMDs4laHQIppAoc';
+$wgAutoloadClasses['WebPlatformAuthHooks']       = $dir . 'includes/WebPlatformAuthHooks.php';
 
-$wgCookieDomain = '.webplatform.org'; // --> LocalSettings.php
+$wgAutoloadClasses['AccountsHandlerSpecialPage'] = $dir . 'includes/specials/AccountsHandlerSpecialPage.php';
+$wgAutoloadClasses['WebPlatformAuthLogin']       = $dir . 'includes/specials/WebPlatformAuthLogin.php';
+$wgAutoloadClasses['WebPlatformAuthLogout']      = $dir . 'includes/specials/WebPlatformAuthLogout.php';
+$wgAutoloadClasses['WebPlatformAuthPassword']    = $dir . 'includes/specials/WebPlatformAuthPassword.php';
+
+$wgMessagesDirs['WebPlatformAuth']           = __DIR__ . '/i18n';
+$wgExtensionMessagesFiles['WebPlatformAuth'] = $dir . 'WebPlatformAuth.i18n.php';
+
+// Change AccountsHandler for better name later #TODO
+$wgSpecialPages['AccountsHandler'] = 'AccountsHandlerSpecialPage';
+$wgSpecialPages['Userlogin']       = 'WebPlatformAuthLogin';
+$wgSpecialPages['Userlogout']      = 'WebPlatformAuthLogout';
+$wgSpecialPages['ChangePassword']  = 'WebPlatformAuthPassword';
+
+$wgHooks['UserLoadFromSession'][]  = 'WebPlatformAuthHooks::onUserLoadFromSession';
+$wgHooks['GetPreferences'][]       = 'WebPlatformAuthHooks::hookLimitPreferences';
+$wgHooks['SpecialPage_initList'][] = 'WebPlatformAuthHooks::hookInitSpecialPages';
