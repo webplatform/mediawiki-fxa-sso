@@ -254,8 +254,7 @@ class FirefoxAccountsManager
       $config['endpoints']['fxa_oauth'],
       $config['endpoints']['fxa_profile'],
       $config['methods']['authorize'],
-      $config['methods']['token'],
-      $config['cfg']['appname']
+      $config['methods']['token']
     );
   }
 }

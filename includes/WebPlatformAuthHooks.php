@@ -139,16 +139,8 @@ class WebPlatformAuthHooks
       // we can actually do that.
       header('Cache-Control: no-store, no-cache, must-revalidate');
 
-      if ( !isset( $GLOBALS['wgDBname'] ) ) {
-        throw new Exception('Please set wgDBname to the name of your database');
-      }
-
-      $other = array();
-      $other['cfg']['appname'] = $GLOBALS['wgDBname'];
-      $config = array_merge( $GLOBALS['wgWebPlatformAuth'] , $other );
-
       try {
-        $apiHandler = new FirefoxAccountsManager( $config );
+        $apiHandler = new FirefoxAccountsManager( $GLOBALS['wgWebPlatformAuth'] );
         // $code can be used ONLY ONCE!
         $bearer_token = $apiHandler->getBearerToken( $code );
 
@@ -171,6 +163,8 @@ class WebPlatformAuthHooks
         } catch ( Exception $e ) {
 
           $GLOBALS['poorman_logging'][] = 'Unknown error: '.$e->getMessage();
+
+          return;
         }
 
         // Note that, HERE, whether we use $GLOBALS['wgUser']
@@ -186,10 +180,6 @@ class WebPlatformAuthHooks
         // whether the user is logged in per se. But rather do both;
         // checking if the user exists in the database. Doesn’t mean
         // the session is bound, yet.
-        //if( $GLOBALS['wgUser']->isLoggedIn() ) {
-          // We have a session, nothing to do
-        //  $GLOBALS['poorman_logging'][] = 'Already Logged in' ;
-        //} else {
         wfSetupSession();
         if( $tempUser->getId() === 0 ){
           // No user exists whatsoever, create and make current user
@@ -236,7 +226,6 @@ class WebPlatformAuthHooks
      *    set $result to any boolean value."
      *
      *    -- 2014-05-22 http://www.mediawiki.org/wiki/Manual:Hooks/UserLoadFromSession
-     *
      *
      * But, if I set $result to either true or false, it doesn’t make the UI to
      * act as if you are logged in, AT ALL. Even though I created

@@ -37,20 +37,8 @@ class AccountsHandlerSpecialPage extends UnlistedSpecialPage
    */
   public function __construct()
   {
-/* MAYBE REMOVE */
-
-    if ( !isset( $GLOBALS['wgDBname'] ) ) {
-      $this->getOutput()->showErrorPage( 'error' , wfMessage( 'Please set wgDBname in your local config' ) );
-
-      return;
-    }
-
-    $other = array();
-    $other['cfg']['appname'] = $GLOBALS['wgDBname'];
-    $config = array_merge( $GLOBALS['wgWebPlatformAuth'] , $other );
-
     try {
-      $apiHandler = new FirefoxAccountsManager( $config );
+      $apiHandler = new FirefoxAccountsManager( $GLOBALS['wgWebPlatformAuth'] );
     } catch ( Exception $e ) {
       $this->getOutput()->showErrorPage( 'error' , $e->getMessage() );
 
@@ -88,7 +76,7 @@ class AccountsHandlerSpecialPage extends UnlistedSpecialPage
 
   private function _callback()
   {
-    //$this->getOutput()->addHtml('Debugging: '.print_r($GLOBALS['poorman_logging'],1));
+    $this->getOutput()->addHtml('Debugging: '.print_r($GLOBALS['poorman_logging'],1));
   }
 
   private function _default()
