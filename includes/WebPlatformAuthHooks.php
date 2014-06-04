@@ -176,7 +176,7 @@ class WebPlatformAuthHooks
 
         //header('Location: '.$site_root);
 
-        return;
+        return true;
       } catch ( Exception $e ) {
         // Other error: e.g. config, or other Guzzle call not expected.
         $msg = 'Unknown error, Could not get authorization token';
@@ -189,7 +189,7 @@ class WebPlatformAuthHooks
 
         //header('Location: '.$site_root);
 
-        return;
+        return true;
       }
 
       //$GLOBALS['poorman_logging'][] = 'Bearer token: '.print_r($bearer_token,1); // DEBUG
@@ -217,7 +217,7 @@ class WebPlatformAuthHooks
 
           error_log($msg);
 
-          return;
+          return true;
         } catch ( Exception $e ) {
           $msg = 'Unknown error, Could not get profile data or create new user';
 
@@ -228,7 +228,7 @@ class WebPlatformAuthHooks
 
           error_log($msg);
 
-          return;
+          return true;
         }
 
         // Note that, HERE, whether we use $GLOBALS['wgUser']
@@ -274,7 +274,7 @@ class WebPlatformAuthHooks
 
           header('Location: ' . $state_data['return_to'] );
 
-          return; // Even though it might just be sent elsewhere, making sure.
+          return true; // Even though it might just be sent elsewhere, making sure.
         }
       } else {
         $GLOBALS['poorman_logging'][] = 'No bearer tokens';
