@@ -163,22 +163,29 @@ class WebPlatformAuthHooks
 
       } catch ( ClientErrorResponseException $e ) {
 
-        $msg  = 'Client Error Response Exception at FirefoxAccountsManager::getBearerToken() : ';
-        $msg .= $e->getMessage();
-
-        $obj = json_decode($e->getResponse()->getBody(true), true);
-        $msg .= (isset($obj['reason'])) ? ', with reason: ' . $obj['reason'] : null;
-        $msg .= (isset($obj['message'])) ? ', message: '.$obj['message'] : null;
+        $msg  = 'Could not get authorization token';
 
         $GLOBALS['poorman_logging'][] = $msg;
+
+        $msg .= ', returned after FirefoxAccountsManager::getBearerToken(), it said:' . $e->getMessage();
+        $obj = json_decode($e->getResponse()->getBody(true), true);
+        $msg .= (isset($obj['reason'])) ? ', reason: ' . $obj['reason'] : null;
+        $msg .= (isset($obj['message'])) ? ', message: '.$obj['message'] : null;
+
+        error_log($msg);
 
         //header('Location: '.$site_root);
 
         return;
       } catch ( Exception $e ) {
         // Other error: e.g. config, or other Guzzle call not expected.
+        $msg = 'Unknown error, Could not get authorization token';
+        $GLOBALS['poorman_logging'][] = $msg;
 
-        $GLOBALS['poorman_logging'][] = 'Unknown error at FirefoxAccountsManager::getBearerToken() : '.$e->getMessage();
+        $msg .= ', returned a "' . get_class($e);
+        $msg .= '" after FirefoxAccountsManager::getBearerToken(), it said: '.$e->getMessage();
+
+        error_log($msg);
 
         //header('Location: '.$site_root);
 
@@ -198,20 +205,28 @@ class WebPlatformAuthHooks
           $tempUser = WebPlatformAuthUserFactory::prepareUser( $profile );
         } catch ( ClientErrorResponseException $e ) {
 
-          $msg  = 'Client Error Response Exception at FirefoxAccountsManager::getProfile() : ';
-          $msg .= $e->getMessage();
+          $msg = 'Could not retrieve profile data';
+          $GLOBALS['poorman_logging'][] = $msg;
+
+          $msg .= ', returned a "' . get_class($e);
+          $msg .= '" after calling getProfile(), it said: '.$e->getMessage();
 
           $obj = json_decode($e->getResponse()->getBody(true), true);
           $msg .= (isset($obj['reason'])) ? ', with reason: ' . $obj['reason'] : null;
           $msg .= (isset($obj['message'])) ? ', message: '.$obj['message'] : null;
 
-          //header('Location: '.$site_root);
+          error_log($msg);
 
           return;
         } catch ( Exception $e ) {
-          $GLOBALS['poorman_logging'][] = 'Unknown error at FirefoxAccountsManager::getProfile() : '.$e->getMessage();
+          $msg = 'Unknown error, Could not get profile data or create new user';
 
-          //header('Location: '.$site_root);
+          $GLOBALS['poorman_logging'][] = $msg;
+
+          $msg .= ', returned a "' . get_class($e);
+          $msg .= '" after FirefoxAccountsManager::getProfile(), it said: '.$e->getMessage();
+
+          error_log($msg);
 
           return;
         }
