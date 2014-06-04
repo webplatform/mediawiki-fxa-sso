@@ -237,7 +237,7 @@ class FirefoxAccountsManager
       $subreq->setHeader( 'Authorization' , 'Bearer ' .  $token_value );
       $r = $client->send( $subreq );
     } catch ( Exception $e ) {
-      throw new Exception('ProfileReaderException: Cannot get user profile', $e);
+      throw new Exception('ProfileReaderException: Cannot get user profile', null, $e);
     }
 
     return $r->json();
