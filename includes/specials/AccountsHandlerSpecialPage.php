@@ -76,7 +76,7 @@ class AccountsHandlerSpecialPage extends UnlistedSpecialPage
 
   private function _callback()
   {
-    $this->getOutput()->addHtml('Debugging: '.print_r($GLOBALS['poorman_logging'],1));
+    $this->getOutput()->addWikiText('== Execution messages =='.PHP_EOL.implode(PHP_EOL.'* ', $GLOBALS['poorman_logging']));
   }
 
   private function _default()

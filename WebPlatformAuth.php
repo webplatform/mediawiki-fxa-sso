@@ -23,9 +23,10 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 $dir = dirname(__FILE__) . '/';
 
 if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
-   $loader = require( __DIR__ . '/vendor/autoload.php' );
-   $loader->add( 'WebPlatform\\', $dir . '/includes/' );
-   $loader->add( 'Guzzle\\', $dir . '/vendor/guzzlehttp/guzzle/src/Guzzle/' );
+  $loader = require( __DIR__ . '/vendor/autoload.php' );
+  $loader->add( 'Guzzle\\', $dir . '/vendor/guzzlehttp/guzzle/src/Guzzle/' );
+} else {
+  die('You MUST install Composer dependencies');
 }
 
 $wgExtensionCredits['other'][] = array(
@@ -53,6 +54,6 @@ $wgSpecialPages['Userlogin']       = 'WebPlatformAuthLogin';
 $wgSpecialPages['Userlogout']      = 'WebPlatformAuthLogout';
 $wgSpecialPages['ChangePassword']  = 'WebPlatformAuthPassword';
 
+$wgHooks['UserLoadFromSession'][]  = 'WebPlatformAuthHooks::onUserLoadFromSession';
 $wgHooks['GetPreferences'][]       = 'WebPlatformAuthHooks::hookLimitPreferences';
 $wgHooks['SpecialPage_initList'][] = 'WebPlatformAuthHooks::hookInitSpecialPages';
-$wgHooks['UserLoadFromSession'][]  = 'WebPlatformAuthHooks::onUserLoadFromSession';

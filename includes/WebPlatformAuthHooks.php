@@ -79,6 +79,17 @@ class WebPlatformAuthHooks
     return true;
   }
 
+  public static function getUsernameFromSession()
+  {
+    try {
+      $username = RequestContext::getMain()->getRequest()->getCookie( 'UserName' );
+    } catch ( Exception $e ) {
+      return false;
+    }
+
+    return $username;
+  }
+
   /**
    * Load session from user
    *
@@ -121,17 +132,22 @@ class WebPlatformAuthHooks
    */
   public static function onUserLoadFromSession( $user, &$result )
   {
-    $GLOBALS['poorman_logging'][] = 'Initializing some logging';
-    $GLOBALS['poorman_logging'][] = ($user->isLoggedIn())?'logged in':'not logged in';
+    $GLOBALS['poorman_logging'] = array();
 
     // Use Native PHP way to check REQUEST params
     $state_key = (isset($_GET['state']))?$_GET['state']:null;
     $code = (isset($_GET['code']))?$_GET['code']:null;
     $bearer_token = null;
     $profile = null;
+    $site_root = str_replace('$1','', $GLOBALS['wgArticlePath']);
+    //$registeredCookieWithUsername = RequestContext::getMain()->getRequest()->getCookie( 'UserName' );
+
+    //$GLOBALS['poorman_logging'][] = 'Registered cookie username: '.print_r($registeredCookieWithUsername, 1);
 
     if ( is_string( $state_key ) && is_string( $code ) ) { // START IF HAS STATE AND CODE
       // WE HAVE STATE AND CODE, NOW ARE THEY JUNK?
+
+      //$GLOBALS['poorman_logging'][] = 'About to retrieve data: '.(($user->isLoggedIn())?'logged in':'not logged in'); // DEBUG
 
       // Since we DO have what we need to get
       // to our validation server, please do not cache.
@@ -142,27 +158,60 @@ class WebPlatformAuthHooks
       try {
         $apiHandler = new FirefoxAccountsManager( $GLOBALS['wgWebPlatformAuth'] );
         // $code can be used ONLY ONCE!
+        //$GLOBALS['poorman_logging'][] = 'Code: '.print_r($code,1); // DEBUG
         $bearer_token = $apiHandler->getBearerToken( $code );
 
       } catch ( ClientErrorResponseException $e ) {
-        // Remote Guzzle call failed at attempting getting Token
 
-        $GLOBALS['poorman_logging'][] = 'Error with Guzzle call: '.$e->getMessage();
+        $msg  = 'Client Error Response Exception at FirefoxAccountsManager::getBearerToken() : ';
+        $msg .= $e->getMessage();
+
+        $obj = json_decode($e->getResponse()->getBody(true), true);
+        $msg .= (isset($obj['reason'])) ? ', with reason: ' . $obj['reason'] : null;
+        $msg .= (isset($obj['message'])) ? ', message: '.$obj['message'] : null;
+
+        $GLOBALS['poorman_logging'][] = $msg;
+
+        //header('Location: '.$site_root);
+
+        return;
       } catch ( Exception $e ) {
         // Other error: e.g. config, or other Guzzle call not expected.
 
-        $GLOBALS['poorman_logging'][] = 'Unknown error: '.$e->getMessage();
+        $GLOBALS['poorman_logging'][] = 'Unknown error at FirefoxAccountsManager::getBearerToken() : '.$e->getMessage();
+
+        //header('Location: '.$site_root);
+
+        return;
       }
+
+      //$GLOBALS['poorman_logging'][] = 'Bearer token: '.print_r($bearer_token,1); // DEBUG
 
       // FirefoxAccountsManager::getBearerToken()
       // returns an array.
       if ( is_array( $bearer_token ) ) {
         try {
           $profile = $apiHandler->getProfile( $bearer_token );
-          $tempUser = WebPlatformAuthUserFactory::prepareUser( $profile );
-        } catch ( Exception $e ) {
 
-          $GLOBALS['poorman_logging'][] = 'Unknown error: '.$e->getMessage();
+          //$GLOBALS['poorman_logging'][] = 'Profile: '.print_r($profile,1); // DEBUG
+
+          $tempUser = WebPlatformAuthUserFactory::prepareUser( $profile );
+        } catch ( ClientErrorResponseException $e ) {
+
+          $msg  = 'Client Error Response Exception at FirefoxAccountsManager::getProfile() : ';
+          $msg .= $e->getMessage();
+
+          $obj = json_decode($e->getResponse()->getBody(true), true);
+          $msg .= (isset($obj['reason'])) ? ', with reason: ' . $obj['reason'] : null;
+          $msg .= (isset($obj['message'])) ? ', message: '.$obj['message'] : null;
+
+          //header('Location: '.$site_root);
+
+          return;
+        } catch ( Exception $e ) {
+          $GLOBALS['poorman_logging'][] = 'Unknown error at FirefoxAccountsManager::getProfile() : '.$e->getMessage();
+
+          //header('Location: '.$site_root);
 
           return;
         }
@@ -200,18 +249,26 @@ class WebPlatformAuthHooks
         $tempUser->saveSettings();
         $tempUser->setCookies();
 
-        $GLOBALS['poorman_logging'][] = ($GLOBALS['wgUser']->isLoggedIn())?'logged in':'not logged in';
-        $GLOBALS['poorman_logging'][] = $tempUser->getId();
+        //$GLOBALS['poorman_logging'][] = ($GLOBALS['wgUser']->isLoggedIn())?'logged in':'not logged in'; // DEBUG
+        //$GLOBALS['poorman_logging'][] = $tempUser->getId(); // DEBUG
         $state_data = $apiHandler->stateRetrieve( $state_key );
+
         if ( is_array($state_data) && isset( $state_data['return_to'] )) {
           $apiHandler->stateDeleteKey( $state_key );
+          $GLOBALS['poorman_logging'][] = 'State data: '.print_r($state_data, 1);
+
           header('Location: ' . $state_data['return_to'] );
+
+          return; // Even though it might just be sent elsewhere, making sure.
         }
       } else {
         $GLOBALS['poorman_logging'][] = 'No bearer tokens';
+
+        header('Location: '.$site_root);
       }
     }
-    $GLOBALS['poorman_logging'][] = ($GLOBALS['wgUser']->isLoggedIn())?'logged in':'not logged in';
+
+    //$GLOBALS['poorman_logging'][] = ($GLOBALS['wgUser']->isLoggedIn())?'logged in':'not logged in';
 
     /**
      * I can put true or false because we wont be using local authentication

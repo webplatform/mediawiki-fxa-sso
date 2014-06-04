@@ -26,6 +26,8 @@ class FirefoxAccountsManager
 
   const TTL = 3600;
 
+  const MAX_CLIENT_TIMEOUT_SECONDS = 3;
+
   private $config = null;
 
   private $profile_data;
@@ -152,6 +154,7 @@ class FirefoxAccountsManager
 
     try {
       $client = new Client();
+      $client->setDefaultOption('timeout', self::MAX_CLIENT_TIMEOUT_SECONDS);
       $subreq = $client->createRequest( 'POST' , $uri , null , $postBody );
       $subreq->setHeader( 'Content-type' , 'application/json' );
 
@@ -159,6 +162,8 @@ class FirefoxAccountsManager
     } catch ( ClientErrorResponseException $e ) {
       throw $e;
     }
+
+    $state_key = $this->stateStash( $stateData ); // Returns uuid
 
     return $r->json();
   }
@@ -223,12 +228,15 @@ class FirefoxAccountsManager
     $token_value = $token['access_token'];
     $uri = $e['fxa_profile'] . 'profile';
 
+    //$GLOBALS['poorman_logging'][] = 'Bearer token read : '.$token_value; // DEBUG
+
     try {
       $client = new Client();
+      $client->setDefaultOption('timeout', self::MAX_CLIENT_TIMEOUT_SECONDS);
       $subreq = $client->createRequest( 'GET' , $uri );
       $subreq->setHeader( 'Authorization' , 'Bearer ' .  $token_value );
       $r = $client->send( $subreq );
-    } catch ( ClientErrorResponseException $e ) {
+    } catch ( Exception $e ) {
       throw $e;
     }
 
