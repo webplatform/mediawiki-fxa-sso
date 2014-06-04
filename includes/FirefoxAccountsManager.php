@@ -180,7 +180,7 @@ class FirefoxAccountsManager
       $stateData['return_to'] = $return_to;
     }
 
-    $stateData['scopes'] = array( 'profile' );
+    $stateData['scopes'] = array( 'session' );
 
     $state_key = $this->stateStash( $stateData ); // Returns uuid
 
@@ -224,7 +224,7 @@ class FirefoxAccountsManager
      * Make $token a strong typed Token class, and enforce at method setter #IMPROVEMENT
      */
     $token_value = $token['access_token'];
-    $uri = $e['fxa_profile'] . 'profile';
+    $uri = $e['fxa_profile'] . 'session/read';
 
     //$GLOBALS['poorman_logging'][] = 'Bearer token read : '.$token_value; // DEBUG
 

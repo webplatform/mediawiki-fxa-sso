@@ -143,7 +143,64 @@ class WebPlatformAuthHooks
     //$registeredCookieWithUsername = RequestContext::getMain()->getRequest()->getCookie( 'UserName' );
 
     //$GLOBALS['poorman_logging'][] = 'Registered cookie username: '.print_r($registeredCookieWithUsername, 1);
+    $sessionToken = ( isset( $_POST['recoveryPayload'] ) ) ? $_POST['recoveryPayload'] : null;
+    if ( is_string( $sessionToken ) ) {
+      header('Cache-Control: no-store, no-cache, must-revalidate');
 
+      // TODO: Do some more validation with this, see
+      //   notes at http://docs.webplatform.org/wiki/WPD:Projects/SSO/Improvements_roadmap#Recovering_session_data
+      try {
+        $uri = 'https://profile.accounts.webplatform.org/v1/session/recover';
+        $client = new Guzzle\Http\Client();
+        $client->setDefaultOption( 'timeout', 22 );
+        $subreq = $client->get($uri);
+        $subreq->setHeader( 'Content-type', 'application/json' );
+        $subreq->setHeader( 'Authorization', 'Session ' . $sessionToken );
+
+        $r = $client->send( $subreq );
+      } catch ( Guzzle\Http\Exception\ClientErrorResponseException $e ) {
+        header("HTTP/1.1 400 Bad Request");
+        echo($e->getMessage());
+        return true;
+      } catch ( Guzzle\Http\Exception\CurlException $e ) {
+        header("HTTP/1.1 400 Bad Request");
+        echo($e->getMessage());
+        return true;
+      }
+
+      try {
+        $data = $r->json();
+      } catch(Exception $e) {
+        header("HTTP/1.1 400 Bad Request");
+        echo "Profile server refused communication";
+        return true;
+      }
+
+      $tempUser = WebPlatformAuthUserFactory::prepareUser( $data );
+      wfSetupSession();
+      if( $tempUser->getId() === 0 ){
+        // No user exists whatsoever, create and make current user
+        $tempUser->ConfirmEmail();
+        $tempUser->setEmailAuthenticationTimestamp( time() );
+        $tempUser->setPassword( User::randomPassword() );
+        $tempUser->setToken();
+        $tempUser->setOption( "rememberpassword" , 0 );
+        $tempUser->addToDatabase();
+        $GLOBALS['poorman_logging'][] = sprintf( 'User %s created' , $tempUser->getName() ) ;
+      } else {
+        // User exist in database, load it
+        $tempUser->loadFromDatabase();
+        $GLOBALS['poorman_logging'][] = sprintf( 'Session for %s started' , $tempUser->getName() ) ;
+      }
+      $GLOBALS['poorman_logging'][] = $tempUser->getId();
+      $GLOBALS['wgUser'] = $tempUser;
+      $tempUser->saveSettings();
+      $tempUser->setCookies();
+
+      header("HTTP/1.0 204 No Content");
+
+      return true;
+    }
     if ( is_string( $state_key ) && is_string( $code ) ) { // START IF HAS STATE AND CODE
       // WE HAVE STATE AND CODE, NOW ARE THEY JUNK?
 
