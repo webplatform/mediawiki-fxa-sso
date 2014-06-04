@@ -163,8 +163,6 @@ class FirefoxAccountsManager
       throw $e;
     }
 
-    $state_key = $this->stateStash( $stateData ); // Returns uuid
-
     return $r->json();
   }
 
