@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Fitoschido"
+		]
+	},
+	"webplatformauth-desc": "Permite que MediaWiki funcione como proveedor de autenticación para webplatform.org"
+}
