@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Lokal Profil"
+		]
+	},
+	"webplatformauth-desc": "Gör det möjligt för MediaWiki att tjäna som webplatform.org-autentiseringsleverantör"
+}
