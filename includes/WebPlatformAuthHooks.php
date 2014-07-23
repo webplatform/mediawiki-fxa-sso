@@ -159,12 +159,34 @@ class WebPlatformAuthHooks
 
         $r = $client->send( $subreq );
       } catch ( Guzzle\Http\Exception\ClientErrorResponseException $e ) {
-        header("HTTP/1.1 400 Bad Request");
-        echo($e->getMessage());
+        $clientErrorStatusCode = $e->getResponse()->getStatusCode();
+        $clientErrorReason = $e->getResponse()->getReasonPhrase();
+        header("X-WebPlatform-WAT: ".$GLOBALS['wgUser']->getId());
+        // We are considering that wgUser id 0 means anonymous
+        if($clientErrorStatusCode === 401 && $GLOBALS['wgUser']->getId() !== 0) {
+          $GLOBALS['wgUser']->logout();
+          unset($_COOKIES);
+          header("HTTP/1.1 401 Unauthorized");
+          header("X-WebPlatform-Outcome: Session closed, closing local too");
+
+        // 401 AND uid 0 means we have nothing to do
+        } elseif($clientErrorStatusCode === 401 && $GLOBALS['wgUser']->getId() === 0) {
+          header("HTTP/1.1 204 No Content");
+          header("X-WebPlatform-Outcome: Session closed both local and accounts");
+
+        // Unhandled case
+        } else {
+          header("HTTP/1.1 " . $clientErrorStatusCode . " " . $clientErrorReason);
+          header("X-WebPlatform-Outcome: ". $GLOBALS['wgUser']->getId());
+        }
+
         return true;
+
       } catch ( Guzzle\Http\Exception\CurlException $e ) {
+        header("X-WebPlatform-Outcome: CurlException");
         header("HTTP/1.1 400 Bad Request");
         echo($e->getMessage());
+
         return true;
       }
 
@@ -172,8 +194,19 @@ class WebPlatformAuthHooks
         $data = $r->json();
       } catch(Exception $e) {
         header("HTTP/1.1 400 Bad Request");
+        header("X-WebPlatform-Outcome: Profile refused communication");
         echo "Profile server refused communication";
+
         return true;
+      }
+
+      header("X-WebPlatform-WAT2: wgUser:" . $GLOBALS['wgUser']->getName() . ", static:" . static::getUsernameFromSession() . ", id:". $GLOBALS['wgUser']->getID());
+
+      if(isset($data['username']) && strtolower(self::getUsernameFromSession()) === strtolower($data['username'])) {
+        header("X-WebPlatform-Outcome: " . strtolower(self::getUsernameFromSession()) . " is " . strtolower($data['username']));
+        header("HTTP/1.1 204 No Content");
+
+        return true; // All is good
       }
 
       $tempUser = WebPlatformAuthUserFactory::prepareUser( $data );
@@ -197,7 +230,15 @@ class WebPlatformAuthHooks
       $tempUser->saveSettings();
       $tempUser->setCookies();
 
-      header("HTTP/1.0 204 No Content");
+      // Ideally, the first false below should be true! But we need SSL at the top level domain
+      setcookie('wpdSsoUsername', $data['username'], time()+60*60*7, '/', '.webplatform.org', false, true);
+
+      if (isset($_GET['username'])) {
+        header("X-WebPlatform-Username: ".$_GET['username']);
+      }
+      #header("X-WebPlatform-Recovery: " . urlencode(json_encode($data)) );
+
+      header("HTTP/1.0 201 Created");
 
       return true;
     }
