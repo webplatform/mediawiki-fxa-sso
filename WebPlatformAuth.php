@@ -30,12 +30,12 @@ if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 $wgExtensionCredits['other'][] = array(
+  'name'           => 'WebPlatformAuth',
   'path'           => __FILE__,
   'version'        => '2.0-dev',
-  'name'           => 'MediaWiki SSO using Firefox Accounts',
-  'author'         => array('Renoir Boulanger'),
+  'author'         => array('[https://renoirboulanger.com Renoir Boulanger]'),
   'url'            => 'http://docs.webplatform.org/wiki/WPD:Projects/SSO/MediaWikiExtension',
-  'descriptionmsg' => 'webplatformauth-desc',
+  'description'    => 'Single Sign On MediaWiki extension',
 );
 
 $wgAutoloadClasses['WebPlatformAuthHooks']       = $dir . 'includes/WebPlatformAuthHooks.php';

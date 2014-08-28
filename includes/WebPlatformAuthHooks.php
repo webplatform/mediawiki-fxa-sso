@@ -79,17 +79,6 @@ class WebPlatformAuthHooks
     return true;
   }
 
-  public static function getUsernameFromSession()
-  {
-    try {
-      $username = RequestContext::getMain()->getRequest()->getCookie( 'UserName' );
-    } catch ( Exception $e ) {
-      return false;
-    }
-
-    return $username;
-  }
-
   /**
    * Load session from user
    *
@@ -134,6 +123,19 @@ class WebPlatformAuthHooks
   {
     $GLOBALS['poorman_logging'] = array();
 
+    $diagnosis['session']  = RequestContext::getMain()->getRequest()->getCookie('_session');
+    $diagnosis['username'] = RequestContext::getMain()->getRequest()->getCookie('UserName');
+    $diagnosis['user_id']  = RequestContext::getMain()->getRequest()->getCookie('UserID');
+    if(isset($_COOKIE['wpdSsoUsername'])) $diagnosis['wpdSsoUsername'] = $_COOKIE['wpdSsoUsername'];
+    if(isset($_POST['recoveryPayload'])) $diagnosis['recoveryPayload'] = $_POST['recoveryPayload'];
+
+    //header("X-WebPlatform-Debug: ".substr(str_replace('"','', json_encode($diagnosis,true)),1,-1));
+    //header("X-WebPlatform-Debug-Cookie: ".substr(str_replace('"','', json_encode($_COOKIE,true)),1,-1));
+
+    //if(isset($_POST['recoveryPayload'])){
+    //  header("X-WebPlatform-Debug-Edgecase2: recoveryPayload is present");
+    //}
+
     // Use Native PHP way to check REQUEST params
     $state_key = (isset($_GET['state']))?$_GET['state']:null;
     $code = (isset($_GET['code']))?$_GET['code']:null;
@@ -141,8 +143,8 @@ class WebPlatformAuthHooks
     $profile = null;
     $site_root = str_replace('$1','', $GLOBALS['wgArticlePath']);
     //$registeredCookieWithUsername = RequestContext::getMain()->getRequest()->getCookie( 'UserName' );
-
     //$GLOBALS['poorman_logging'][] = 'Registered cookie username: '.print_r($registeredCookieWithUsername, 1);
+
     $sessionToken = ( isset( $_POST['recoveryPayload'] ) ) ? $_POST['recoveryPayload'] : null;
     if ( is_string( $sessionToken ) ) {
       header('Cache-Control: no-store, no-cache, must-revalidate');
@@ -161,29 +163,23 @@ class WebPlatformAuthHooks
       } catch ( Guzzle\Http\Exception\ClientErrorResponseException $e ) {
         $clientErrorStatusCode = $e->getResponse()->getStatusCode();
         $clientErrorReason = $e->getResponse()->getReasonPhrase();
-        header("X-WebPlatform-WAT: ".$GLOBALS['wgUser']->getId());
+
         // We are considering that wgUser id 0 means anonymous
         if($clientErrorStatusCode === 401 && $GLOBALS['wgUser']->getId() !== 0) {
           $GLOBALS['wgUser']->logout();
-          unset($_COOKIES);
           header("HTTP/1.1 401 Unauthorized");
-          header("X-WebPlatform-Outcome: Session closed, closing local too");
+          header("X-WebPlatform-Outcome-1: Session closed, closing local too");
 
         // 401 AND uid 0 means we have nothing to do
         } elseif($clientErrorStatusCode === 401 && $GLOBALS['wgUser']->getId() === 0) {
           header("HTTP/1.1 204 No Content");
-          header("X-WebPlatform-Outcome: Session closed both local and accounts");
-
-        // Unhandled case
-        } else {
-          header("HTTP/1.1 " . $clientErrorStatusCode . " " . $clientErrorReason);
-          header("X-WebPlatform-Outcome: ". $GLOBALS['wgUser']->getId());
+          header("X-WebPlatform-Outcome-2: Session closed both local and accounts");
         }
 
         return true;
 
       } catch ( Guzzle\Http\Exception\CurlException $e ) {
-        header("X-WebPlatform-Outcome: CurlException");
+        header("X-WebPlatform-Outcome-3: CurlException");
         header("HTTP/1.1 400 Bad Request");
         echo($e->getMessage());
 
@@ -194,16 +190,16 @@ class WebPlatformAuthHooks
         $data = $r->json();
       } catch(Exception $e) {
         header("HTTP/1.1 400 Bad Request");
-        header("X-WebPlatform-Outcome: Profile refused communication");
+        header("X-WebPlatform-Outcome-4: Profile refused communication");
         echo "Profile server refused communication";
 
         return true;
       }
 
-      header("X-WebPlatform-WAT2: wgUser:" . $GLOBALS['wgUser']->getName() . ", static:" . static::getUsernameFromSession() . ", id:". $GLOBALS['wgUser']->getID());
-
-      if(isset($data['username']) && strtolower(self::getUsernameFromSession()) === strtolower($data['username'])) {
-        header("X-WebPlatform-Outcome: " . strtolower(self::getUsernameFromSession()) . " is " . strtolower($data['username']));
+      # 20140807
+      $wgUserName = (is_object($GLOBALS['wgUser']))?$GLOBALS['wgUser']->getName():null;
+      if(isset($data['username']) && strtolower($wgUserName) === strtolower($data['username'])) {
+        header("X-WebPlatform-Outcome-5: " . strtolower($wgUserName) . " is " . strtolower($data['username']));
         header("HTTP/1.1 204 No Content");
 
         return true; // All is good
