@@ -135,8 +135,4 @@ class ApiWebPlatformAuth extends ApiBase {
 	public function getHelpUrls() {
 		return 'https://www.webplatform.org';
 	}
-
-	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiWebPlatformAuth.php 6651 2012-09-30 22:33:29Z mglaser $';
-	}
 }
